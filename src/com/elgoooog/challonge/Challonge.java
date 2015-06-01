@@ -17,7 +17,7 @@ import java.util.List;
  *         Time: 11:22 PM
  */
 public class Challonge {
-    private static final String BASE_URL = "https://challonge.com/api/";
+    private static final String BASE_URL = "https://challonge.com/api/v1";
 
     private final HttpInvoker httpInvoker;
     private final TournamentParser tournamentParser;
