@@ -7,6 +7,7 @@ import java.util.List;
  * @author Nicholas Hauschild
  *         Date: 5/14/13
  *         Time: 8:01 PM
+ * @version 1.0.2
  */
 public class Participant {
     private final boolean active;
@@ -27,13 +28,15 @@ public class Participant {
     private final String challongeUsername;
     private final String challongeEmailAddressVerified;
     private final List<Match> matches;
+    private final Date checkedInAt;
 
     public Participant(final boolean active, final boolean checkedIn, final Date createdAt,
                        final int finalRank, final int groupId, final String icon, final int id,
                        final int invitationId, final String inviteEmail, final String misc,
                        final String name, final boolean onWaitingList, final int seed,
                        final int tournamentId, final Date updatedAt, final String challongeUsername,
-                       final String challongeEmailAddressVerified, final List<Match> matches) {
+                       final String challongeEmailAddressVerified, final List<Match> matches,
+                       final Date checkedInAt) {
         this.active = active;
         this.checkedIn = checkedIn;
         this.createdAt = createdAt;
@@ -52,6 +55,7 @@ public class Participant {
         this.challongeUsername = challongeUsername;
         this.challongeEmailAddressVerified = challongeEmailAddressVerified;
         this.matches = matches;
+        this.checkedInAt = checkedInAt;
     }
 
     public boolean isActive() {
@@ -125,6 +129,10 @@ public class Participant {
     public List<Match> getMatches() {
         return matches;
     }
+    
+    public Date getCheckedInAt(){
+    	return checkedInAt;
+    }
 
     public static class Builder {
         private boolean active;
@@ -145,7 +153,8 @@ public class Participant {
         private String challongeUsername;
         private String challongeEmailAddressVerified;
         private List<Match> matches;
-
+        private Date checkedInAt;
+        
         public Builder doActive(final boolean active) {
             this.active = active;
             return this;
@@ -235,11 +244,16 @@ public class Participant {
             this.matches = matches;
             return this;
         }
+        
+        public Builder withCheckedInAt(final Date checkedInAt){
+        	this.checkedInAt = checkedInAt;
+        	return this;
+        }
 
         public Participant build() {
             return new Participant(active, checkedIn, createdAt, finalRank, groupId, icon, id, invitationId,
                     inviteEmail, misc, name, onWaitingList, seed, tournamentId, updatedAt, challongeUsername,
-                    challongeEmailAddressVerified, matches);
+                    challongeEmailAddressVerified, matches, checkedInAt);
         }
     }
 }

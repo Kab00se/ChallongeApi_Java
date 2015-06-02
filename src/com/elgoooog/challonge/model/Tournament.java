@@ -8,6 +8,7 @@ import java.util.List;
  * @author Nicholas Hauschild
  *         Date: 5/11/13
  *         Time: 11:30 PM
+ * @version 1.0.2
  */
 public class Tournament {
     private final boolean acceptAttachments;
@@ -69,6 +70,8 @@ public class Tournament {
     private final boolean reviewBeforeFinalizing;
     private final List<Participant> participants;
     private final List<Match> matches;
+    private final Date startAt;
+    private final int checkInDuration;
 
     public Tournament(final boolean acceptAttachments, final boolean anonymousVoting, final String category,
                       final Date checkInAt, final Date completedAt, final Date createdAt, final boolean createdByApi,
@@ -87,7 +90,8 @@ public class Tournament {
                       final int swissRounds, final int thirdPlaceId, final TournamentType tournamentType, final Date updatedAt,
                       final String url, final int winnerId, final String descriptionSource, final String subdomain,
                       final String fullChallongeUrl, final String liveImageUrl, final String signUpUrl,
-                      final boolean reviewBeforeFinalizing, final List<Participant> participants, final List<Match> matches) {
+                      final boolean reviewBeforeFinalizing, final List<Participant> participants, final List<Match> matches,
+                      final Date startAt, final int checkInDuration) {
         this.acceptAttachments = acceptAttachments;
         this.anonymousVoting = anonymousVoting;
         this.category = category;
@@ -147,6 +151,8 @@ public class Tournament {
         this.reviewBeforeFinalizing = reviewBeforeFinalizing;
         this.participants = participants;
         this.matches = matches;
+        this.startAt = startAt;
+        this.checkInDuration = checkInDuration;
     }
 
     public boolean isAcceptAttachments() {
@@ -384,6 +390,14 @@ public class Tournament {
     public List<Match> getMatches() {
         return matches;
     }
+    
+    public Date getStartAt(){
+    	return startAt;
+    }
+    
+    public int getCheckInDuration(){
+    	return checkInDuration;
+    }
 
     public static class Builder {
         private boolean acceptAttachments;
@@ -445,6 +459,8 @@ public class Tournament {
         private boolean reviewBeforeFinalizing;
         private List<Participant> participants = new ArrayList<>();
         private List<Match> matches = new ArrayList<>();
+        private Date startAt;
+        private int checkInDuration;
 
         public Builder doAcceptAttchments(final boolean acceptAttachments) {
             this.acceptAttachments = acceptAttachments;
@@ -740,6 +756,16 @@ public class Tournament {
             this.matches = matches;
             return this;
         }
+        
+        public Builder withStartAt(final Date startAt){
+        	this.startAt = startAt;
+        	return this;
+        }
+        
+        public Builder withCheckInDuration(final int checkInDuration){
+        	this.checkInDuration = checkInDuration;
+        	return this;
+        }
 
         public Tournament build() {
             return new Tournament(acceptAttachments, anonymousVoting, category, checkInAt, completedAt,
@@ -753,7 +779,7 @@ public class Tournament {
                     rrPointsForMatchWin, secondPlaceId, sequentialPairings, showRounds, signupCap,
                     signupRequiresAccount, startedAt, state, swissRounds, thirdPlaceId, tournamentType,
                     updatedAt, url, winnerId, descriptionSource, subdomain, fullChallongeUrl, liveImageUrl,
-                    signUpUrl, reviewBeforeFinalizing, participants, matches);
+                    signUpUrl, reviewBeforeFinalizing, participants, matches, startAt, checkInDuration);
         }
     }
 }

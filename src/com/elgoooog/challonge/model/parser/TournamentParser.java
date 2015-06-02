@@ -13,6 +13,7 @@ import java.util.Map;
  * @author Nicholas Hauschild
  *         Date: 5/12/13
  *         Time: 11:04 PM
+ * @version 1.0.2
  */
 public class TournamentParser extends Parser<Tournament> {
     private final ListParser<Participant> partipantsParser;
@@ -259,6 +260,13 @@ public class TournamentParser extends Parser<Tournament> {
                                     final List<Match> matches = matchesParser.parse(xmlReader);
                                     builder.withMatches(matches);
                                     break;
+                                case "start-at":
+                                	builder.withStartAt(DateFormats.PARSER_SDF.get().parse(xmlReader.getElementText()));
+                                	break;
+                                case "check-in-duration":
+                                	final int checkInDuration = Integer.valueOf(xmlReader.getElementText());
+                                	builder.withCheckInDuration(checkInDuration);
+                                	break;
                                 default:
                                     break;
                             }

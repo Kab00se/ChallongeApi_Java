@@ -15,9 +15,10 @@ import java.util.List;
  * @author Nicholas Hauschild
  *         Date: 5/11/13
  *         Time: 11:22 PM
+ * @version 1.0.2
  */
 public class Challonge {
-    private static final String BASE_URL = "https://challonge.com/api/v1";
+    private static final String BASE_URL = "https://challonge.com/api/v1/";
 
     private final HttpInvoker httpInvoker;
     private final TournamentParser tournamentParser;
@@ -37,6 +38,7 @@ public class Challonge {
         this.tournamentsParser = new ListParser<>(tournamentParser, "tournament");
     }
 
+    // 1.0.0
     public List<Tournament> listTournaments() {
         return listTournaments(new ListTournamentRequest.Builder().build());
     }
@@ -649,5 +651,74 @@ public class Challonge {
 
         final HttpResponse httpResponse = httpInvoker.invoke(requestBuilder.build());
         return matchParser.parse(httpResponse.getBody());
+    }
+    // 1.0.1 (Attachments)
+    // Not implemented
+    
+    // 1.0.2 (Check-in)
+    public Participant checkInParticipant(final String tournamentUrlPath, final int participantId) {
+        return checkInParticipant(new CheckInParticipantRequest(tournamentUrlPath, participantId));
+    }
+    
+    public Participant checkInParticipant(final CheckInParticipantRequest request) {
+        final String tournamentUrlPath = request.getTournamentUrlPath();
+        final int participantId = request.getParticipantId();
+        final HttpRequest.Builder requestBuilder = new HttpRequest.Builder(BASE_URL + "tournaments/"
+            + tournamentUrlPath + "/participants/" + participantId + "/check_in.xml");
+
+        final HttpResponse httpResponse = httpInvoker.invoke(requestBuilder.build());
+        return participantParser.parse(httpResponse.getBody());
+    }
+    
+    public Tournament checkInTournament(final String urlPath) {
+        final CheckInProcessTournamentRequest request = new CheckInProcessTournamentRequest.Builder(urlPath).build();
+        return checkInTournament(request);
+    }
+
+    public Tournament checkInTournament(final CheckInProcessTournamentRequest request) {
+        final String urlPath = request.getUrlPath();
+        final HttpRequest.Builder requestBuilder = new HttpRequest.Builder(BASE_URL + "tournaments/"
+                + urlPath + "process_check_ins.xml");
+
+        final Boolean includeParticipants = request.isIncludeParticipants();
+        if(includeParticipants != null) {
+            final String paramValue = includeParticipants ? "1" : "0";
+            requestBuilder.withQueryParam("include_participants", paramValue);
+        }
+
+        final Boolean includeMatches = request.isIncludeMatches();
+        if(includeMatches != null) {
+            final String paramValue = includeMatches ? "1" : "0";
+            requestBuilder.withQueryParam("include_matches", paramValue);
+        }
+
+        final HttpResponse httpResponse = httpInvoker.invoke(requestBuilder.build());
+        return tournamentParser.parse(httpResponse.getBody());
+    }
+    
+    public Tournament checkInAbortTournament(final String urlPath) {
+        final CheckInAbortTournamentRequest request = new CheckInAbortTournamentRequest.Builder(urlPath).build();
+        return checkInAbortTournament(request);
+    }
+
+    public Tournament checkInAbortTournament(final CheckInAbortTournamentRequest request) {
+        final String urlPath = request.getUrlPath();
+        final HttpRequest.Builder requestBuilder = new HttpRequest.Builder(BASE_URL + "tournaments/"
+                + urlPath + "abort_check_in.xml");
+
+        final Boolean includeParticipants = request.isIncludeParticipants();
+        if(includeParticipants != null) {
+            final String paramValue = includeParticipants ? "1" : "0";
+            requestBuilder.withQueryParam("include_participants", paramValue);
+        }
+
+        final Boolean includeMatches = request.isIncludeMatches();
+        if(includeMatches != null) {
+            final String paramValue = includeMatches ? "1" : "0";
+            requestBuilder.withQueryParam("include_matches", paramValue);
+        }
+
+        final HttpResponse httpResponse = httpInvoker.invoke(requestBuilder.build());
+        return tournamentParser.parse(httpResponse.getBody());
     }
 }

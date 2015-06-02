@@ -14,6 +14,7 @@ import java.util.Map;
  * @author Nicholas Hauschild
  *         Date: 5/14/13
  *         Time: 8:03 PM
+ * @version 1.0.2
  */
 public class ParticipantParser extends Parser<Participant> {
     private final ListParser<Match> matchesParser;
@@ -103,6 +104,9 @@ public class ParticipantParser extends Parser<Participant> {
                                 case "matches":
                                     final List<Match> matches = matchesParser.parse(xmlReader);
                                     builder.withMatches(matches);
+                                    break;
+                                case "checked-in-at":
+                                    builder.withCheckedInAt(DateFormats.PARSER_SDF.get().parse(xmlReader.getElementText()));
                                     break;
                                 default:
                                     break;
