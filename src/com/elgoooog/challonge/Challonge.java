@@ -18,7 +18,7 @@ import java.util.List;
  * @version 1.0.2
  */
 public class Challonge {
-    private static final String BASE_URL = "https://challonge.com/api/v1/";
+    private static final String BASE_URL = "https://api.challonge.com/v1/";
 
     private final HttpInvoker httpInvoker;
     private final TournamentParser tournamentParser;
